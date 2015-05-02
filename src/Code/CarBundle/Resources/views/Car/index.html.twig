@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}CodeCarBundle:Car:index{% endblock %}
+
+{% block body %}
+
+    <ul>
+        {% for carro in carros %}
+            <li>{{ carro.marca }}</li>
+                <ul>
+                    {% for modelo in carro.modelo %}
+                        <li>{{ modelo }}</li>
+                    {% endfor %}
+                </ul>
+        {% endfor %}
+    </ul>
+{% endblock %}
