@@ -14,13 +14,13 @@ class CarController extends Controller
      */
     public function indexAction()
     {
-        return array(
-                'carros' => array(
-                    ['marca' =>'chevrolet', 'modelo' => ['corsa', 'celta', 'prisma', 'camaro', 'blazer']],
-                    ['marca' =>'volkswagen', 'modelo' => ['golf', 'saveiro', 'fox', 'gol', 'polo']],
-                    ['marca' =>'renault', 'modelo' => ['duster', 'scenic', 'megane', 'laguna', 'sandero']]
-                )
-            );
+        $repo = $this->getDoctrine()->getManager();;
+        $fabricantes = $repo->getRepository("CodeCarBundle:Fabricante")->findAll();
+        $modelos = $repo->getRepository("CodeCarBundle:Carro")->findAll();
+
+
+
+        return ['fabricantes' => $fabricantes, 'carros' => $modelos ];
     }
 
 }
