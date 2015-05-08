@@ -31,7 +31,8 @@ class Carro
     /**
      * @var string
      *
-     * @ORM\Column(name="fabricante", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="Code\CarBundle\Entity\Fabricante", inversedBy="carros")
+     * @ORM\JoinColumn(name="fabricante_id", referencedColumnName="id")
      */
     private $fabricante;
 

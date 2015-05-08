@@ -2,6 +2,7 @@
 
 namespace Code\CarBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,7 +28,31 @@ class Fabricante
      * @ORM\Column(name="nome", type="string", length=255)
      */
     private $nome;
+    /**
+     * @ORM\OneToMany(targetEntity="Code\CarBundle\Entity\Carro", mappedBy="fabricante")
+     */
+    private $carros;
 
+    function __construct()
+    {
+        $this->carros = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCarros()
+    {
+        return $this->carros;
+    }
+
+    /**
+     * @param mixed $carros
+     */
+    public function addCarros($carro)
+    {
+        $this->carros[] = $carro;
+    }
 
     /**
      * Get id

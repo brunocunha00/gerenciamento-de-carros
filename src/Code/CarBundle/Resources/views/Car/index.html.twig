@@ -7,6 +7,11 @@
     <ul>
         {% for fabricante in fabricantes %}
             <li>{{ fabricante.nome }}</li>
+            <ul>
+                {% for carro in fabricante.carros %}
+                    <li>{{ carro.modelo }} - {{ carro.ano }} - {{ carro.cor }}</li>
+                {% endfor %}
+            </ul>
 
         {% endfor %}
     </ul>
@@ -24,7 +29,7 @@
             {% for carro in carros %}
                 <tr>
                     <td>{{ carro.modelo }}</td>
-                    <td>{{ carro.fabricante }}</td>
+                    <td>{{ carro.fabricante.nome }}</td>
                     <td>{{ carro.ano }}</td>
                     <td>{{ carro.cor }}</td>
                 </tr>
