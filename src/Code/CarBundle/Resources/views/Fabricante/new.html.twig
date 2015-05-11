@@ -3,5 +3,12 @@
 {% block title %}CodeCarBundle:Fabricante:new{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Fabricante:new page</h1>
+    <h1>Cadastro de Fabricante</h1>
+
+    <form action="{{ path('fabricante_create') }}" method="post">
+        {{ form_widget(form) }}
+        <input type="submit" value="Cadastrar" class="btn btn-primary"/>
+        <a href="{{ path('fabricante_index') }}" class="btn btn-default">Voltar</a>
+    </form>
+
 {% endblock %}
