@@ -1,0 +1,34 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}CodeCarBundle:Fabricante:index{% endblock %}
+
+{% block body %}
+    <h1>Fabricantes</h1>
+    <a href="{{ path("fabricante_new") }}" class="btn btn-primary">Novo Fabricante</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Fabricante</th>
+                <th>Modelos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fabricante in fabricantes %}
+                <tr>
+                    <td>{{ fabricante.id}}</td>
+                    <td>{{ fabricante.nome }}</td>
+                    <td>
+                        <ul>
+                            {% for carro in fabricante.carros %}
+                                <li>{{ carro.modelo }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
