@@ -11,6 +11,7 @@
                 <th>Código</th>
                 <th>Fabricante</th>
                 <th>Modelos</th>
+                <th>Ação</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,10 @@
                                 <li>{{ carro.modelo }}</li>
                             {% endfor %}
                         </ul>
+                    </td>
+                    <td>
+                        <a href="{{ path("fabricante_edit", {'id': fabricante.id})  }}" class="btn btn-primary">Editar</a>
+                        <a href="{{ path("fabricante_delete", {'id': fabricante.id}) }}" class="btn btn-warning">Deletar</a>
                     </td>
                 </tr>
             {% endfor %}

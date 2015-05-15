@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>Cadastro de Fabricante</h1>
+
+    <form action="{{ path('fabricante_update', {'id': fabricante.id}) }}" method="post">
+        {{ form_widget(form) }}
+        <input type="submit" value="Atualizar" class="btn btn-primary"/>
+        <a href="{{ path('fabricante_index') }}" class="btn btn-default">Voltar</a>
+    </form>
+{% endblock %}
+

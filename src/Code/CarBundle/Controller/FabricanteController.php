@@ -4,6 +4,7 @@ namespace Code\CarBundle\Controller;
 
 use Code\CarBundle\Entity\Fabricante;
 use Code\CarBundle\Form\FabricanteType;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -60,6 +61,67 @@ class FabricanteController extends Controller
         return array(
                 'form' => $form->createview()
             );
+    }
+
+    /**
+     * @Route("/{id}/edit", name="fabricante_edit")
+     * @Template()
+     */
+    public function editAction($id)
+    {
+
+        $fabricante = $this->getDoctrine()->getRepository("CodeCarBundle:Fabricante")->find($id);
+        if(!$fabricante)
+        {
+            throw new EntityNotFoundException();
+        }
+
+        $form = $this->createForm(new FabricanteType(), $fabricante);
+
+        return array(
+            'fabricante' => $fabricante,
+            'form' => $form->createView()
+        );
+    }
+
+    /**
+     * @Route("/{id}/update", name="fabricante_update")
+     * @Template("@CodeCar/Fabricante/edit.html.twig")
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $fabricante = $this->getDoctrine()->getRepository("CodeCarBundle:Fabricante")->find($id);
+        $form = $this->createForm(new FabricanteType(), $fabricante);
+        $form->bind($request);
+
+        if($form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($fabricante);
+            $em->flush();
+            return $this->redirectToRoute("fabricante_index");
+        }
+        return array(
+            'fabricante' => $fabricante,
+            'form' => $form->createview()
+        );
+    }
+
+    /**
+     * @Route("/{id}/delete", name="fabricante_delete")
+     */
+    public function deleteAction($id)
+    {
+        $fabricante = $this->getDoctrine()->getRepository("CodeCarBundle:Fabricante")->find($id);
+        if(!$fabricante)
+        {
+            throw new EntityNotFoundException();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($fabricante);
+        $em->flush();
+
+        return $this->redirectToRoute("fabricante_index");
     }
 
 }
