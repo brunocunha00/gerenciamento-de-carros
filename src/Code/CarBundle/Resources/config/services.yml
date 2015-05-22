@@ -1,0 +1,7 @@
+parameters:
+#    code.car.example.class: Code\CarBundle\Example
+
+services:
+  code.carbundle.fabricante:
+    class: Code\CarBundle\Service\FabricanteService
+    arguments: [@doctrine.orm.entity_manager]

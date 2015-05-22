@@ -53,9 +53,7 @@ class FabricanteController extends Controller
 
         if($form->isValid())
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($fabricante);
-            $em->flush();
+            $this->get('code.carbundle.fabricante')->persist($fabricante);
             return $this->redirectToRoute("fabricante_index");
         }
         return array(
@@ -96,9 +94,7 @@ class FabricanteController extends Controller
 
         if($form->isValid())
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($fabricante);
-            $em->flush();
+            $this->get('code.carbundle.fabricante')->persist($fabricante);
             return $this->redirectToRoute("fabricante_index");
         }
         return array(
@@ -117,10 +113,7 @@ class FabricanteController extends Controller
         {
             throw new EntityNotFoundException();
         }
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($fabricante);
-        $em->flush();
-
+        $this->get('code.carbundle.fabricante')->remove($fabricante);
         return $this->redirectToRoute("fabricante_index");
     }
 
