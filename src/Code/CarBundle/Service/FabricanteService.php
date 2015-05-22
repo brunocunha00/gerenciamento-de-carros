@@ -25,4 +25,11 @@ class FabricanteService {
         $this->em->flush();
     }
 
+    public function findAll(){
+        return $this->em->getRepository('CodeCarBundle:Fabricante')->findAll();
+    }
+
+    public function find($id){
+        return $this->em->getRepository('CodeCarBundle:Fabricante')->find($id);
+    }
 }

@@ -4,6 +4,7 @@ namespace Code\CarBundle\Controller;
 
 use Code\CarBundle\Entity\Fabricante;
 use Code\CarBundle\Form\FabricanteType;
+use Code\CarBundle\Service\FabricanteService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,17 +17,26 @@ use Symfony\Component\HttpFoundation\Request;
 class FabricanteController extends Controller
 {
 
+    private $fabricanteService;
+
+    function __construct(FabricanteService $service)
+    {
+        $this->fabricanteService = $service;
+    }
+
+
     /**
      * @Route("/", name="fabricante_index")
      * @Template()
      */
     public function indexAction()
     {
-        $fabricantes = $this->getDoctrine()->getManager()->getRepository("CodeCarBundle:Fabricante")->findAll();
+        $fabricantes = $this->fabricanteService->findAll();
 
         return array(
             'fabricantes' => $fabricantes
-        );    }
+        );
+    }
 
     /**
      * @Route("/new", name="fabricante_new")
@@ -53,7 +63,7 @@ class FabricanteController extends Controller
 
         if($form->isValid())
         {
-            $this->get('code.carbundle.fabricante')->persist($fabricante);
+            $this->fabricanteService->persist($fabricante);
             return $this->redirectToRoute("fabricante_index");
         }
         return array(
@@ -68,7 +78,7 @@ class FabricanteController extends Controller
     public function editAction($id)
     {
 
-        $fabricante = $this->getDoctrine()->getRepository("CodeCarBundle:Fabricante")->find($id);
+        $fabricante = $this->fabricanteService->find($id);
         if(!$fabricante)
         {
             throw new EntityNotFoundException();
@@ -88,13 +98,13 @@ class FabricanteController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $fabricante = $this->getDoctrine()->getRepository("CodeCarBundle:Fabricante")->find($id);
+        $fabricante = $this->fabricanteService->find($id);
         $form = $this->createForm(new FabricanteType(), $fabricante);
         $form->bind($request);
 
         if($form->isValid())
         {
-            $this->get('code.carbundle.fabricante')->persist($fabricante);
+            $this->fabricanteService->persist($fabricante);
             return $this->redirectToRoute("fabricante_index");
         }
         return array(
@@ -108,12 +118,12 @@ class FabricanteController extends Controller
      */
     public function deleteAction($id)
     {
-        $fabricante = $this->getDoctrine()->getRepository("CodeCarBundle:Fabricante")->find($id);
+        $fabricante = $this->fabricanteService->find($id);
         if(!$fabricante)
         {
             throw new EntityNotFoundException();
         }
-        $this->get('code.carbundle.fabricante')->remove($fabricante);
+        $this->fabricanteService->remove($fabricante);
         return $this->redirectToRoute("fabricante_index");
     }
 
