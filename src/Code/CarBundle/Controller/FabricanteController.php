@@ -10,12 +10,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/fabricante")
  */
 class FabricanteController extends Controller
 {
+
+    /**
+     * @Route("/new", name="fabricante_new")
+     * @Template()
+     */
+    public function newAction()
+    {
+        $this->checkAdminAuth();
+        $fabricante = new Fabricante();
+        $form = $this->createForm(new FabricanteType(), $fabricante);
+//        $form->add('');
+
+        return array('form' => $form->createView());
+    }
 
     /**
      * @Route("/", name="fabricante_index")
@@ -31,24 +46,12 @@ class FabricanteController extends Controller
     }
 
     /**
-     * @Route("/new", name="fabricante_new")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $fabricante = new Fabricante();
-        $form = $this->createForm(new FabricanteType(), $fabricante);
-//        $form->add('');
-
-        return array('form' => $form->createView());
-    }
-
-    /**
      * @Route("/create", name="fabricante_create")
      * @Template("@CodeCar/Fabricante/new.html.twig")
      */
     public function createAction(Request $request)
     {
+        $this->checkAdminAuth();
         $fabricante = new Fabricante();
         $form = $this->createForm(new FabricanteType(), $fabricante);
         $form->bind($request);
@@ -69,7 +72,7 @@ class FabricanteController extends Controller
      */
     public function editAction($id)
     {
-
+        $this->checkAdminAuth();
         $fabricante = $this->get("code.carbundle.fabricante")->find($id);
         if(!$fabricante)
         {
@@ -90,6 +93,7 @@ class FabricanteController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+        $this->checkAdminAuth();
         $fabricante = $this->get("code.carbundle.fabricante")->find($id);
         $form = $this->createForm(new FabricanteType(), $fabricante);
         $form->bind($request);
@@ -110,6 +114,7 @@ class FabricanteController extends Controller
      */
     public function deleteAction($id)
     {
+        $this->checkAdminAuth();
         $fabricante = $this->get("code.carbundle.fabricante")->find($id);
         if(!$fabricante)
         {
@@ -117,6 +122,13 @@ class FabricanteController extends Controller
         }
         $this->get("code.carbundle.fabricante")->remove($fabricante);
         return $this->redirectToRoute("fabricante_index");
+    }
+
+    private function checkAdminAuth()
+    {
+        if (!$this->get("security.context")->isGranted("ROLE_ADMIN")) {
+            throw new AccessDeniedException("Acesso Negado. Somente Administrador.");
+        }
     }
 
 }

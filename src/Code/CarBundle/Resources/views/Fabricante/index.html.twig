@@ -4,14 +4,18 @@
 
 {% block body %}
     <h1>Fabricantes</h1>
-    <a href="{{ path("fabricante_new") }}" class="btn btn-primary">Novo Fabricante</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path("fabricante_new") }}" class="btn btn-primary">Novo Fabricante</a>
+    {% endif %}
     <table class="table">
         <thead>
             <tr>
                 <th>Código</th>
                 <th>Fabricante</th>
                 <th>Modelos</th>
-                <th>Ação</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Ação</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -26,10 +30,12 @@
                             {% endfor %}
                         </ul>
                     </td>
-                    <td>
-                        <a href="{{ path("fabricante_edit", {'id': fabricante.id})  }}" class="btn btn-primary">Editar</a>
-                        <a href="{{ path("fabricante_delete", {'id': fabricante.id}) }}" class="btn btn-warning">Deletar</a>
-                    </td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path("fabricante_edit", {'id': fabricante.id})  }}" class="btn btn-primary">Editar</a>
+                            <a href="{{ path("fabricante_delete", {'id': fabricante.id}) }}" class="btn btn-warning">Deletar</a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
 
